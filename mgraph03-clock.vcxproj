@@ -11,11 +11,13 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\camera.c" />
     <ClCompile Include="src\main.c" />
     <ClCompile Include="src\scene.c" />
     <ClCompile Include="src\stdafx.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\camera.h" />
     <ClInclude Include="src\scene.h" />
     <ClInclude Include="src\stdafx.h" />
   </ItemGroup>

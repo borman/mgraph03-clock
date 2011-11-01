@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "scene.h"
+#include "camera.h"
 
 /* GLUT callback Handlers */
 
@@ -21,16 +22,7 @@ static void display(void)
 {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-  // Setup camera
-  double phi = glutGet(GLUT_ELAPSED_TIME) * (M_PI/10000);
-  double rad = 10;
-  double camx = rad*cos(phi);
-  double camy = rad*sin(phi);
-  double camz = 4 + 2*sin(phi*3.5);
-
-  glLoadIdentity() ;
-  gluLookAt(camx, camy, camz, 0, 0, 0, 0, 0, 1);
-
+  camera_setup();
   scene_display();
 
   glutSwapBuffers();
