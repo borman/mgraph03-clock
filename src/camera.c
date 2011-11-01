@@ -11,5 +11,5 @@ void camera_setup(void)
   double camz = 4 + 2*sin(phi*3.5);
 
   glLoadIdentity() ;
-  gluLookAt(camx, camy, camz, 0, 0, 0, 0, 0, 1);
+  gluLookAt(camx, camy, camz, 0, 0, 2.0, 0, 0, 1);
 }

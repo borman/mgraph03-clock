@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
   glutInitWindowSize(640,480);
   glutInitWindowPosition(40,40);
   glutInit(&argc, argv);
-  glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH | GLUT_MULTISAMPLE);
+  glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH | GLUT_MULTISAMPLE);
 
   glutCreateWindow("OpenGLUT Shapes");
 

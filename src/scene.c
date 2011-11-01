@@ -14,7 +14,8 @@ struct sphere
 static struct sphere spheres[N_SPHERES];
 
 
-static void objPancake(double radius, int n_sectors);
+static void drawPancake(double radius, int n_sectors);
+static void drawObjects(void);
 
 void scene_init(void)
 {
@@ -25,7 +26,7 @@ void scene_init(void)
     double phi = rand_u() * 2 * M_PI;
     spheres[i].x = r*cos(phi);
     spheres[i].y = r*sin(phi);
-    spheres[i].z = 0;
+    spheres[i].z = 5*rand_u();
     spheres[i].r = 0.5 + r*0.2*rand_u();
     spheres[i].color[0] = phi<=M_PI? sin(phi) : 0;
     spheres[i].color[1] = abs(cos(phi));
@@ -35,10 +36,12 @@ void scene_init(void)
   glEnable(GL_FOG);
   {
     GLfloat fogColor[4] = {0.0, 0.0, 0.0, 1.0};
-    glFogi(GL_FOG_MODE, GL_EXP2);
+    glFogi(GL_FOG_MODE, GL_LINEAR);
     glFogfv(GL_FOG_COLOR, fogColor);
     glFogf(GL_FOG_DENSITY, 0.06);
     glHint(GL_FOG_HINT, GL_DONT_CARE);
+    glFogf(GL_FOG_START, 15.0);
+    glFogf(GL_FOG_END, 50.0);
   }
   
   // Lighting
@@ -64,31 +67,48 @@ void scene_init(void)
 void scene_display(void)
 {
   // Position lights
-  GLfloat light0[] = { 1.0, 1.0, 5.0, 0.0 };
-  GLfloat light1[] = { -4.0, -4.0, 1.0, 0.0 };
+  GLfloat light0[] = {1.0, 1.0, 5.0, 0.0};
+  GLfloat light1[] = {-4.0, -4.0, 1.0, 0.0};
+
+  GLdouble ground_plane[] = {0.0, 0.0, 1.0, 0.0};
+
+  // Reflection
+  glPushMatrix();
+    glEnable(GL_CLIP_PLANE0);
+    glScalef(1, 1, -1);
+    glClipPlane(GL_CLIP_PLANE0, ground_plane);
+    glLightfv(GL_LIGHT0, GL_POSITION, light0);
+    glLightfv(GL_LIGHT1, GL_POSITION, light1);
+    glFrontFace(GL_CW);
+
+    drawObjects();
+
+    glFrontFace(GL_CCW);
+    glDisable(GL_CLIP_PLANE0);
+  glPopMatrix();
+
   glLightfv(GL_LIGHT0, GL_POSITION, light0);
   glLightfv(GL_LIGHT1, GL_POSITION, light1);
 
   // Ground pancake
-  static const GLfloat pancake_color[] = {1.0, 1.0, 1.0, 1.0};
-  glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, pancake_color);
-  objPancake(30, 20);
+  glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    //glBlendFunc(GL_ONE, GL_ONE);
+    static const GLfloat pancake_color[] = {1.0, 1.0, 1.0, 0.7};
+    glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, pancake_color);
+    drawPancake(50, 20);
+  glDisable(GL_BLEND);
 
-  // Spheres
-  for (int i=0; i<N_SPHERES; i++)
-  {
-    glPushMatrix();
-    glTranslated(spheres[i].x, spheres[i].y, spheres[i].z);
-    //glColor3dv(spheres[i].color);
-    glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, spheres[i].color);
-    glutSolidSphere(spheres[i].r, 20, 20);
-    glPopMatrix();
-  }
+  // Real objects
+  glEnable(GL_CLIP_PLANE0);
+    glClipPlane(GL_CLIP_PLANE0, ground_plane);
+    drawObjects();
+  glDisable(GL_CLIP_PLANE0);
 }
 
 // ----------------
 
-static void objPancake(double radius, int n_sectors)
+static void drawPancake(double radius, int n_sectors)
 {
   static const GLfloat normal[] = {0.0, 0.0, 1.0};
   glBegin(GL_TRIANGLE_FAN);
@@ -103,4 +123,16 @@ static void objPancake(double radius, int n_sectors)
     }
   }
   glEnd();
+}
+
+static void drawObjects(void)
+{
+  for (int i=0; i<N_SPHERES; i++)
+  {
+    glPushMatrix();
+    glTranslated(spheres[i].x, spheres[i].y, spheres[i].z);
+    glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, spheres[i].color);
+    glutSolidSphere(spheres[i].r, 20, 20);
+    glPopMatrix();
+  }
 }
