@@ -4,8 +4,7 @@
 
 /* GLUT callback Handlers */
 
-static void
-  resize(int width, int height)
+static void on_resize(int width, int height)
 {
   const float ar = (float) width / (float) height;
 
@@ -18,7 +17,7 @@ static void
   glMatrixMode(GL_MODELVIEW);
 }
 
-static void display(void)
+static void on_display(void)
 {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -29,7 +28,7 @@ static void display(void)
 }
 
 
-static void key(unsigned char key, int x, int y)
+static void on_key(unsigned char key, int x, int y)
 {
   switch (key)
   {
@@ -44,12 +43,19 @@ static void key(unsigned char key, int x, int y)
   glutPostRedisplay();
 }
 
-static void special (int key, int x, int y)
+static void on_special (int key, int x, int y)
 {
 }
 
+static void on_mouse(int button, int state, int x, int y)
+{
+  GLdouble nx = -0.001 * ((GLdouble) x / (GLdouble) glutGet(GLUT_WINDOW_WIDTH) - 0.5);
+  GLdouble ny = -0.001 * ((GLdouble) y / (GLdouble) glutGet(GLUT_WINDOW_HEIGHT) - 0.5);
+  camera_impulse(nx, ny);
+  glutPostRedisplay();
+}
 
-static void idle(void)
+static void on_idle(void)
 {
   glutPostRedisplay();
 }
@@ -65,11 +71,12 @@ int main(int argc, char *argv[])
 
   glutCreateWindow("OpenGLUT Shapes");
 
-  glutReshapeFunc(resize);
-  glutDisplayFunc(display);
-  glutKeyboardFunc(key);
-  glutSpecialFunc(special);
-  glutIdleFunc(idle);
+  glutReshapeFunc(on_resize);
+  glutDisplayFunc(on_display);
+  glutKeyboardFunc(on_key);
+  glutMouseFunc(on_mouse);
+  glutSpecialFunc(on_special);
+  glutIdleFunc(on_idle);
 
   glutSetOption ( GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_CONTINUE_EXECUTION ) ;
 

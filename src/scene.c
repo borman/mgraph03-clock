@@ -132,7 +132,7 @@ static void drawObjects(void)
     glPushMatrix();
     glTranslated(spheres[i].x, spheres[i].y, spheres[i].z);
     glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, spheres[i].color);
-    glutSolidSphere(spheres[i].r, 20, 20);
+    glutWireSphere(spheres[i].r, 20, 20);
     glPopMatrix();
   }
 }

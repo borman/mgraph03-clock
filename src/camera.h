@@ -3,4 +3,6 @@
 
 void camera_setup(void);
 
+void camera_impulse(GLdouble du, GLdouble dv);
+
 #endif // CAMERA_H
