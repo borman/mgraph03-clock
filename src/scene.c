@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "scene.h"
+#include "obj_parser/obj_parser.h"
 
 struct sphere
 {
@@ -16,6 +17,8 @@ static struct sphere spheres[N_SPHERES];
 
 static void drawPancake(double radius, int n_sectors);
 static void drawObjects(void);
+
+static void loadModel(void);
 
 void scene_init(void)
 {
@@ -135,4 +138,13 @@ static void drawObjects(void)
     glutWireSphere(spheres[i].r, 20, 20);
     glPopMatrix();
   }
+}
+
+static void loadModel(void)
+{
+  obj_scene_data data;
+  if( !parse_obj_scene(&data, "test.obj") )
+    return;
+
+  delete_obj_data(&data);
 }

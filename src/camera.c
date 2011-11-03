@@ -8,8 +8,8 @@
 **/
 static const GLdouble friction = 0.001;
 
-static GLdouble u_speed = 0.001;
-static GLdouble v_speed = 0.0001;
+static GLdouble u_speed = 0;
+static GLdouble v_speed = 0;
 static GLdouble u_base = 0;
 static GLdouble v_base = 0.3;
 

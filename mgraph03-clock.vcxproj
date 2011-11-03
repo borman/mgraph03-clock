@@ -13,11 +13,17 @@
   <ItemGroup>
     <ClCompile Include="src\camera.c" />
     <ClCompile Include="src\main.c" />
+    <ClCompile Include="src\obj_parser\list.c" />
+    <ClCompile Include="src\obj_parser\obj_parser.c" />
+    <ClCompile Include="src\obj_parser\string_extra.c" />
     <ClCompile Include="src\scene.c" />
     <ClCompile Include="src\stdafx.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\camera.h" />
+    <ClInclude Include="src\obj_parser\list.h" />
+    <ClInclude Include="src\obj_parser\obj_parser.h" />
+    <ClInclude Include="src\obj_parser\string_extra.h" />
     <ClInclude Include="src\scene.h" />
     <ClInclude Include="src\stdafx.h" />
   </ItemGroup>
