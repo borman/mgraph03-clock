@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "scene.h"
-#include "obj_parser/obj_parser.h"
+#include "clock.h"
 
 struct sphere
 {
@@ -35,6 +35,8 @@ void scene_init(void)
     spheres[i].color[1] = abs(cos(phi));
     spheres[i].color[2] = phi>=M_PI? -sin(phi) : 0;
   }
+  
+  clock_load();
 
   glEnable(GL_FOG);
   {
@@ -65,6 +67,8 @@ void scene_init(void)
   glShadeModel(GL_SMOOTH);
   glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
   glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
+
+  glEnable(GL_NORMALIZE);
 }
 
 void scene_display(void)
@@ -135,16 +139,13 @@ static void drawObjects(void)
     glPushMatrix();
     glTranslated(spheres[i].x, spheres[i].y, spheres[i].z);
     glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, spheres[i].color);
-    glutWireSphere(spheres[i].r, 20, 20);
+    glutSolidSphere(spheres[i].r, 20, 20);
     glPopMatrix();
   }
-}
-
-static void loadModel(void)
-{
-  obj_scene_data data;
-  if( !parse_obj_scene(&data, "test.obj") )
-    return;
-
-  delete_obj_data(&data);
+  
+  glPushMatrix();
+  glTranslated(0.0, 0.0, 3.1);
+  glScaled(3.0, 3.0, 3.0);
+  clock_draw();
+  glPopMatrix();
 }

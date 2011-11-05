@@ -10,7 +10,7 @@ static const GLdouble friction = 0.001;
 
 static GLdouble u_speed = 0;
 static GLdouble v_speed = 0;
-static GLdouble u_base = 0;
+static GLdouble u_base = M_PI/2;
 static GLdouble v_base = 0.3;
 
 static int time_offset = 0;
