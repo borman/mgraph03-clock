@@ -12,14 +12,17 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\camera.cpp" />
-    <ClCompile Include="src\clock.cpp" />
+    <ClCompile Include="src\loader.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\material.cpp" />
     <ClCompile Include="src\scene.cpp" />
     <ClCompile Include="src\stdafx.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\camera.h" />
-    <ClInclude Include="src\clock.h" />
+    <ClInclude Include="src\loader.h" />
+    <ClInclude Include="src\display_list.h" />
+    <ClInclude Include="src\material.h" />
     <ClInclude Include="src\scene.h" />
     <ClInclude Include="src\stdafx.h" />
   </ItemGroup>
