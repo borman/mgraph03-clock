@@ -29,7 +29,6 @@ void scene_init(void)
   // Lighting
   GLfloat light0_color[] = { 1.0, 1.0, 1.0, 1.0 };
   GLfloat light1_color[] = { 2.0, 2.0, 2.0, 1.0 };
-  GLfloat lmodel_ambient[] = { 0.1, 0.1, 0.1, 1.0 };
   glLightfv(GL_LIGHT0, GL_DIFFUSE, light0_color);
   glLightfv(GL_LIGHT0, GL_SPECULAR, light0_color);
   glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 0.1);
@@ -169,9 +168,6 @@ static void draw_objects(void)
 
 static void draw_clock(void)
 {
-  GLfloat clock_color[4] = {1.0, 1.0, 1.0, 0.7};
-  GLfloat handle_color[4] = {0.3, 0.3, 0.3, 1.0};
-
   struct timeb time;
   ftime(&time);
 
@@ -180,11 +176,6 @@ static void draw_clock(void)
   GLfloat hour = (((time.time/60 - time.timezone)/60) + (time.dstflag?1:0)) % 12;
 
   GLfloat tstamp = sec + 60*min + 3600*hour;
-
-  Material mat_clock(Color(1.0, 1.0, 1.0, 0.7), 200.0, clWhite);
-  Material mat_handle(Color(0.3, 0.3, 0.3, 1.0));
-
-  mat_clock.apply();
 
   glPushMatrix();
   {
@@ -206,8 +197,6 @@ static void draw_clock(void)
 
   objsClock["Clock"].exec();
   
-  mat_handle.apply();
-
   glPushMatrix();
     glRotatef(- 6*sec, 0, 1, 0);
     objsClock["SecondHandle"].exec();

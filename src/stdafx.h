@@ -7,6 +7,7 @@
 #include <cstdio>
 #include <cmath>
 #include <ctime>
+#include <cstring>
 #include <sys/types.h>
 #include <sys/timeb.h>
 
