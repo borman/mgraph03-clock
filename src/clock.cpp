@@ -10,6 +10,7 @@ struct v3d
 struct tri
 {
   int v1, v2, v3;
+  int t1, t2, t3;
   int n1, n2, n3;
 };
 
@@ -36,7 +37,7 @@ void clock_load(void)
     getline(src, line);
     char objname[64];
     GLfloat x, y, z;
-    int v1, v2, v3, n1, n2, n3;
+    int v1, v2, v3, t1, t2, t3, n1, n2, n3;
 
     if (strchr(line.c_str(), '#'))
       continue; // comment
@@ -63,7 +64,22 @@ void clock_load(void)
     else if (6 == sscanf(line.c_str(), "f %d//%d %d//%d %d//%d", &v1, &n1, &v2, &n2, &v3, &n3))
     {
       // face
-      tri t = {v1-1, v2-1, v3-1, n1-1, n2-1, n3-1};
+      tri t = {
+        v1-1, v2-1, v3-1, 
+        0, 0, 0,
+        n1-1, n2-1, n3-1
+      };
+      objects[obj].push_back(t);
+    }
+    else if (9 == sscanf(line.c_str(), "f %d/%d/%d %d/%d/%d %d/%d/%d", 
+                         &v1, &t1, &n1, &v2, &t2, &n2, &v3, &t3, &n3))
+    {
+      // face
+      tri t = {
+        v1-1, v2-1, v3-1,
+        t1-1, t2-1, t3-1,
+        n1-1, n2-1, n3-1
+      };
       objects[obj].push_back(t);
     }
   }
@@ -84,7 +100,7 @@ static void draw_object(int index)
 
 void clock_draw(void)
 {
-  GLfloat clock_color[4] = {1.0, 1.0, 1.0, 0.2};
+  GLfloat clock_color[4] = {1.0, 1.0, 1.0, 0.7};
   GLfloat handle_color[4] = {0.3, 0.3, 0.3, 1.0};
 
   struct timeb time;
@@ -94,8 +110,29 @@ void clock_draw(void)
   GLfloat min = (time.time/60 + time.timezone) % 60;
   GLfloat hour = (((time.time/60 - time.timezone)/60) + (time.dstflag?1:0)) % 12;
 
+  GLfloat tstamp = sec + 60*min + 3600*hour;
+
   glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, clock_color);
 
+  glPushMatrix();
+  {
+    GLdouble k = -0.1*sin(tstamp * 2 * M_PI);
+    glTranslated(k, 0, 0);
+    draw_object(obj_names["Holder1"]);
+    glTranslated(-2*k, 0, 0);
+    draw_object(obj_names["Holder2"]);
+  }
+  glPopMatrix();
+
+  glPushMatrix();
+  {
+    GLdouble k = 1.2 + -abs(0.3*sin(tstamp * 2 * M_PI) - 0.1);
+    glScaled(k, k, k);
+    draw_object(obj_names["Heart"]);
+  }
+  glPopMatrix();
+
+  // TODO: simulate floating
   draw_object(obj_names["Clock"]);
   
   glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, handle_color);

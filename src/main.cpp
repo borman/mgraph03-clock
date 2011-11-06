@@ -47,11 +47,37 @@ static void on_special (int key, int x, int y)
 {
 }
 
+static int drag_base_x = 0;
+static int drag_base_y = 0;
+
+static void do_drag(int x, int y)
+{
+  GLdouble nx = -0.005 * ((GLdouble) (x - drag_base_x));
+  GLdouble ny = 0.005 * ((GLdouble) (y - drag_base_y));
+  drag_base_x = x;
+  drag_base_y = y;
+  camera_drag(nx, ny);
+}
+
 static void on_mouse(int button, int state, int x, int y)
 {
-  GLdouble nx = -0.001 * ((GLdouble) x / (GLdouble) glutGet(GLUT_WINDOW_WIDTH) - 0.5);
-  GLdouble ny = -0.001 * ((GLdouble) y / (GLdouble) glutGet(GLUT_WINDOW_HEIGHT) - 0.5);
-  camera_impulse(nx, ny);
+  if (button==GLUT_LEFT_BUTTON && state==GLUT_DOWN)
+  {
+    camera_drag_start();
+    drag_base_x = x;
+    drag_base_y = y;
+  }
+
+  if (button==GLUT_LEFT_BUTTON && state==GLUT_UP)
+  {
+    camera_drag_end();
+  }
+  glutPostRedisplay();
+}
+
+static void on_motion(int x, int y)
+{
+  do_drag(x, y);
   glutPostRedisplay();
 }
 
@@ -69,12 +95,13 @@ int main(int argc, char *argv[])
   glutInit(&argc, argv);
   glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH | GLUT_MULTISAMPLE);
 
-  glutCreateWindow("OpenGLUT Shapes");
+  glutCreateWindow("OpenGL Clock");
 
   glutReshapeFunc(on_resize);
   glutDisplayFunc(on_display);
   glutKeyboardFunc(on_key);
   glutMouseFunc(on_mouse);
+  glutMotionFunc(on_motion);
   glutSpecialFunc(on_special);
   glutIdleFunc(on_idle);
 

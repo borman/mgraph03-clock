@@ -8,7 +8,7 @@ struct sphere
   double y;
   double z;
   double r;
-  GLfloat color[3];
+  GLfloat color[4];
 };
 
 #define N_SPHERES 10
@@ -25,15 +25,16 @@ void scene_init(void)
   // Create spheres
   for (int i=0; i<N_SPHERES; i++)
   {
-    double r = 3 + rand_u() * 20;
-    double phi = rand_u() * 2 * M_PI;
+    double r = 13 + (rand_u()-0.5) * 10;
+    double phi = rand_u() * 4 * M_PI;
     spheres[i].x = r*cos(phi);
     spheres[i].y = r*sin(phi);
-    spheres[i].z = 5*rand_u();
-    spheres[i].r = 0.5 + r*0.2*rand_u();
-    spheres[i].color[0] = phi<=M_PI? sin(phi) : 0;
-    spheres[i].color[1] = abs(cos(phi));
-    spheres[i].color[2] = phi>=M_PI? -sin(phi) : 0;
+    spheres[i].z = 1*rand_u();
+    spheres[i].r = 1 + r*0.2*rand_u();
+    spheres[i].color[0] = 0.7 + 0.3*(phi<=M_PI? sin(phi) : 0);
+    spheres[i].color[1] = 0.7 + 0.3*(abs(cos(phi)));
+    spheres[i].color[2] = 0.7 + 0.3*(phi>=M_PI? -sin(phi) : 0);
+    spheres[i].color[3] = 1.0;
   }
   
   clock_load();
@@ -46,7 +47,7 @@ void scene_init(void)
     glFogf(GL_FOG_DENSITY, 0.06);
     glHint(GL_FOG_HINT, GL_DONT_CARE);
     glFogf(GL_FOG_START, 15.0);
-    glFogf(GL_FOG_END, 50.0);
+    glFogf(GL_FOG_END, 40.0);
   }
   
   // Lighting
@@ -54,8 +55,14 @@ void scene_init(void)
   GLfloat lmodel_ambient[] = { 0.1, 0.1, 0.1, 1.0 };
   glLightfv(GL_LIGHT0, GL_DIFFUSE, white_light);
   glLightfv(GL_LIGHT0, GL_SPECULAR, white_light);
+  glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 0.1);
+  glLightf(GL_LIGHT0, GL_QUADRATIC_ATTENUATION, 0.01);
+
   glLightfv(GL_LIGHT1, GL_DIFFUSE, white_light);
   glLightfv(GL_LIGHT1, GL_SPECULAR, white_light);
+  glLightf(GL_LIGHT1, GL_LINEAR_ATTENUATION, 0.01);
+  glLightf(GL_LIGHT1, GL_QUADRATIC_ATTENUATION, 0.01);
+
   glLightModelfv(GL_LIGHT_MODEL_AMBIENT, lmodel_ambient);
   glEnable(GL_LIGHTING);
   glEnable(GL_LIGHT0);
@@ -69,13 +76,16 @@ void scene_init(void)
   glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
 
   glEnable(GL_NORMALIZE);
+  glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 void scene_display(void)
 {
   // Position lights
-  GLfloat light0[] = {1.0, 1.0, 5.0, 0.0};
-  GLfloat light1[] = {-4.0, -4.0, 1.0, 0.0};
+  GLfloat light0[] = {1.0, 1.0, 20.0, 1.0};
+  //GLfloat light1[] = {-8.0, 4.0, 5.0, 0.0};
+  GLfloat light1[] = {0.0, 5.0, 4, 1.0};
 
   GLdouble ground_plane[] = {0.0, 0.0, 1.0, 0.0};
 
@@ -98,13 +108,9 @@ void scene_display(void)
   glLightfv(GL_LIGHT1, GL_POSITION, light1);
 
   // Ground pancake
-  glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    //glBlendFunc(GL_ONE, GL_ONE);
-    static const GLfloat pancake_color[] = {1.0, 1.0, 1.0, 0.7};
+    static const GLfloat pancake_color[] = {0.4, 0.1, 0.5, 0.7};
     glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, pancake_color);
     drawPancake(50, 20);
-  glDisable(GL_BLEND);
 
   // Real objects
   glEnable(GL_CLIP_PLANE0);
