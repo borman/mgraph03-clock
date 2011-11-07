@@ -45,6 +45,15 @@ static void on_key(unsigned char key, int x, int y)
 
 static void on_special (int key, int x, int y)
 {
+  static const GLdouble u_power = 0.001;
+  static const GLdouble v_power = 0.001;
+  switch (key)
+  {
+  case GLUT_KEY_LEFT:  camera_impulse(-u_power, 0); break;
+  case GLUT_KEY_RIGHT: camera_impulse(u_power, 0); break;
+  case GLUT_KEY_UP:    camera_impulse(0, v_power); break;
+  case GLUT_KEY_DOWN:  camera_impulse(0, -v_power); break;
+  }
 }
 
 static int drag_base_x = 0;
@@ -93,7 +102,7 @@ int main(int argc, char *argv[])
   glutInitWindowSize(640,480);
   glutInitWindowPosition(40,40);
   glutInit(&argc, argv);
-  glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH | GLUT_MULTISAMPLE);
+  glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH | GLUT_MULTISAMPLE);
 
   glutCreateWindow("OpenGL Clock");
 

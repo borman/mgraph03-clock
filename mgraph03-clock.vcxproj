@@ -14,17 +14,17 @@
     <ClCompile Include="src\camera.cpp" />
     <ClCompile Include="src\loader.cpp" />
     <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\material.cpp" />
     <ClCompile Include="src\scene.cpp" />
     <ClCompile Include="src\stdafx.cpp" />
+    <ClCompile Include="src\texture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\camera.h" />
     <ClInclude Include="src\loader.h" />
-    <ClInclude Include="src\display_list.h" />
-    <ClInclude Include="src\material.h" />
+    <ClInclude Include="src\gl_utils.h" />
     <ClInclude Include="src\scene.h" />
     <ClInclude Include="src\stdafx.h" />
+    <ClInclude Include="src\texture.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{FE227E55-454A-4BC5-9472-01E7322B6CF9}</ProjectGuid>

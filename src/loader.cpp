@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "loader.h"
-#include "material.h"
+#include "gl_utils.h"
 
 using namespace std;
 
@@ -46,7 +46,6 @@ static map<string, Material> mtl_load(const char *filename)
     { // object
       if (!current_mtl.empty())
       {
-        cout << "finish mat " << current_mtl << ": " << mtl << endl;
         res[current_mtl] = mtl;
         mtl = Material();
       }
@@ -69,10 +68,7 @@ static map<string, Material> mtl_load(const char *filename)
     }
   }
   if (!current_mtl.empty())
-  {
-    cout << "finish mat " << current_mtl << ": " << mtl << endl;
     res[current_mtl] = mtl;
-  }
 
   return res;
 }

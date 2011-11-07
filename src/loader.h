@@ -2,7 +2,7 @@
 #define CLOCK_H
 
 #include "stdafx.h"
-#include "display_list.h"
+#include "gl_utils.h"
 
 typedef std::map<std::string, DisplayList> NamedObjects;
 

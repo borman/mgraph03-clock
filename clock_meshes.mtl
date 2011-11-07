@@ -16,7 +16,7 @@ newmtl ClockHandles
 newmtl ClockBase
 	Ns 70.0000
 	Ni 1.5000
-	d 0.2700
+	d 0.600
 	Tr 0.7300
 	Tf 0.2700 0.2700 0.2700 
 	illum 2
