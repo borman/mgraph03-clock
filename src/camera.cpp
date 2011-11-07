@@ -76,7 +76,9 @@ void camera_setup(void)
   double camz = rad * sin(v);
 
   glLoadIdentity() ;
-  gluLookAt(camx, camy, camz, 0, 0, 3.0, 0, 0, 1);
+  gluLookAt(camx, camy, camz, 
+            0,    0.0, 3.0, 
+            0,    0,    1);
 }
 
 void camera_impulse(GLdouble du, GLdouble dv)

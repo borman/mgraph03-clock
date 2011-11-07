@@ -129,3 +129,12 @@ int main(int argc, char *argv[])
 
   return EXIT_SUCCESS;
 }
+
+#ifdef WIN32
+int __stdcall WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
+{
+  int argc=1;
+  char *argv[] = {"clock", 0};
+  return main(argc, argv);
+}
+#endif // WIN32

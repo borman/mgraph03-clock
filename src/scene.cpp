@@ -148,7 +148,7 @@ static void draw_pancake(double radius, int n_sectors)
   static const GLfloat normal[] = {0.0, 0.0, 1.0};
   glBegin(GL_TRIANGLE_FAN);
   {
-    static const GLdouble texScale = 0.5;
+    static const GLdouble texScale = 0.8;
     glNormal3fv(normal);
     glTexCoord2d(0.5, 0.5);
     glVertex3d(0, 0, 0);
@@ -163,9 +163,12 @@ static void draw_pancake(double radius, int n_sectors)
   glEnd();
 }
 
+//=======================================
+
 static void draw_objects(bool needGround)
 {
   static GLdouble clock_radius = 3.0;
+  static GLdouble clock_height = 0.2;
 
   // Get clock time
   struct timeb time;
@@ -178,7 +181,7 @@ static void draw_objects(bool needGround)
   // Place lights
   GLfloat light0[] = {1.0, 1.0, 20.0, 1.0};
   GLfloat light1[] = {0.0, 2.5, 4.0,  1.0};
-  GLfloat light2[] = {0.0, 0.2, 0.1+clock_radius,  1.0};
+  GLfloat light2[] = {0.0, 0.2, clock_height+clock_radius,  1.0};
   {
     GLdouble phi = (sec/60 + 0.25) * 2*M_PI;
     light2[0] += cos(phi)*2.3;
@@ -200,7 +203,7 @@ static void draw_objects(bool needGround)
     objSpheres.exec();
   
     glPushMatrix();
-      glTranslated(0.0, 0.0, 0.1+clock_radius);
+      glTranslated(0.0, 0.0, clock_height+clock_radius);
       glScaled(clock_radius, clock_radius, clock_radius);
       draw_clock(hour, min, sec);
     glPopMatrix();
