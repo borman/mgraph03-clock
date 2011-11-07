@@ -63,20 +63,37 @@ void scene_init(void)
   prepare_objects();
 }
 
-void scene_display(void)
+void scene_display(bool needReflection)
 {
+  glInitNames();
   // Reflection
-  glPushMatrix();
-    glScalef(1, 1, -1);
-    glFrontFace(GL_CW);
+  if (needReflection)
+  {
+    glPushMatrix();
+      glScalef(1, 1, -1);
+      glFrontFace(GL_CW);
 
-    draw_objects(false);
+      draw_objects(false);
 
-    glFrontFace(GL_CCW);
-  glPopMatrix();
+      glFrontFace(GL_CCW);
+    glPopMatrix();  
+  }
 
   // Real objects
   draw_objects(true);
+}
+
+void scene_interact(void)
+{
+  static int mode = 0;
+  GLfloat colors[][4] = {
+    { 0.0, 10.0, 0.0, 1.0 },
+    { 10.0, 0.0, 0.0, 1.0 }
+  };
+
+  mode = 1-mode;
+  glLightfv(GL_LIGHT2, GL_DIFFUSE, colors[mode]);
+  glLightfv(GL_LIGHT2, GL_SPECULAR, colors[mode]);
 }
 
 // ----------------
@@ -233,7 +250,9 @@ static void draw_clock(GLfloat hour, GLfloat min, GLfloat sec)
   }
   glPopMatrix();
 
+  glPushName(1);
   objsClock["Clock"].exec();
+  glPopName();
   
   glPushMatrix();
     glRotatef(-6*sec, 0, 1, 0);

@@ -118,7 +118,7 @@ void camera_drag(GLdouble du, GLdouble dv)
 
   u_offset += du;
   v_offset += dv;
-  u_speed = du/dtime;
-  v_speed = dv/dtime;
+  u_speed = du/(dtime+1);
+  v_speed = dv/(dtime+1);
   time_offset = time;
 }
